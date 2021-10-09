@@ -17,11 +17,11 @@ DHT dht(DHTPIN, DHTTYPE);
 int counter = 0;
 String message = ""; 
 void setup() {
-  //dht.begin(); 
-  //Serial.begin(115200);
-  //while (!Serial);
+  dht.begin(); 
+  Serial.begin(115200);
+  while (!Serial);
  
-  //Serial.println("LoRa Sender");
+  Serial.println("LoRa Sender");
  
   LoRa.setTxPower(TX_P);
   LoRa.setSyncWord(ENCRYPT);
@@ -35,18 +35,18 @@ void setup() {
 }
  
 void loop() {
-  //Serial.print("Sending packet: ");
-  //Serial.println(counter);
+  Serial.print("Sending packet: ");
+  Serial.println(counter);
   
-  //float h = dht.readHumidity();       //Gets Humidity value
-  //float t = dht.readTemperature();    //Gets Temperature value
-  
+  float h = dht.readHumidity();       //Gets Humidity value
+  float t = dht.readTemperature();    //Gets Temperature value
+  //Serial.print(t);
   // send packet
   LoRa.beginPacket();
-  LoRa.print("hello ");
-  LoRa.print(counter);
-  //message = "\ntemp: "+ String(t) + "\nHumd: " + String(h);
-  //LoRa.print(message);
+  //LoRa.print("hello ");
+  //LoRa.print(counter);
+  message = String(counter)+ "," +String(t) + "," + String(h);
+  LoRa.print(message);
   LoRa.endPacket();
  
   counter++;
