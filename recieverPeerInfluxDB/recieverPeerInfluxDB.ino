@@ -27,6 +27,8 @@ WiFiMulti wifiMulti;
 #define TX_P 17
 #define BAND 433E6
 #define ENCRYPT 0x35
+#define SpreadingFactor 12
+#define CodingRate 8
 
 
 // Set timezone string according to https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html
@@ -60,7 +62,7 @@ void setup() {
   }
   Serial.println();
 
-  // Add tags
+  // Add tags for inlfuxDB
   sensor.addTag("device", DEVICE);
   sensor.addTag("SSID", WiFi.SSID());
 
@@ -78,10 +80,13 @@ void setup() {
     Serial.println(client.getLastErrorMessage());
   }
   while (!Serial);
- 
+  
+  //LoRa setip
   Serial.println("LoRa Receiver");
   LoRa.setTxPower(TX_P);
   LoRa.setSyncWord(ENCRYPT);
+  LoRa.setCodingRate4(CodingRate);
+  LoRa.setSpreadingFactor(SpreadingFactor);
   
   LoRa.setPins(SS, RST, DI0);
   if (!LoRa.begin(BAND)) 
@@ -96,6 +101,7 @@ void loop() {
   String Message = "";
   float temp = 0.0;
   float hum = 0.0;
+  float moisture = 0.0;
   int counter =0;
   
   // try to parse packet
@@ -111,17 +117,20 @@ void loop() {
     }
 
   //splitting message into the three values
-  int delimiter, delimiter_1;
+  int delimiter, delimiter_1 ,delimiter_2 ;
   delimiter = Message.indexOf(",");
   delimiter_1 = Message.indexOf(",", delimiter + 1);
+  delimiter_2 = Message.indexOf(",", delimiter_1 + 1);
   //Define variables to be executed on the code later by collecting information from the readString as substrings.
   String first = Message.substring(0, delimiter);
   String second = Message.substring(delimiter + 1, delimiter_1);
-  String third = Message.substring(delimiter_1 + 1, Message.length());
+  String third = Message.substring(delimiter_1 + 1, delimiter_2);
+  String fourth = Message.substring(delimiter_2 + 1, Message.length());
 
   counter = first.toFloat();
   temp = second.toFloat();
   hum = third.toFloat();
+  moisture = fourth.toFloat();
    //Serial.println(counter);
   //Serial.println(temp);
   //Serial.println(hum);
@@ -141,7 +150,9 @@ void loop() {
   sensor.addField("Frame", counter);
   sensor.addField("Temperature", temp);
   sensor.addField("Humidity", hum);
+  sensor.addField("Moisture", moisture);
   sensor.addField("LoRa rssi" ,LoRa.packetRssi());
+  sensor.addField("SNR" , LoRa.packetSnr());
 
   // Print what are we exactly writing
   Serial.print("Writing: ");
