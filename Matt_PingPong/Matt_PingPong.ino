@@ -12,7 +12,6 @@
 #define DIO                   2       // DIO0 for SX127x, DIO1 for SX126x
 #define NRST                  14      // NRST pin (optional)
 #define BUSY                  4       // BUSY pin (SX126x-only)
-
 // modem configuration
 #define LORA_FREQUENCY        436.7   // MHz
 #define FSK_FREQUENCY         436.9   // MHz
@@ -32,7 +31,7 @@ char callsign[] = "FOSSASAT-2";
 uint32_t lastTransmit = 0;
 
 // transmission period in ms
-const uint32_t transmitPeriod = 4000;
+const uint32_t transmitPeriod = 10000;
 
 // interrupt flags
 volatile bool receivedFlag = false;
@@ -49,7 +48,6 @@ void setFlag(void) {
 
 void setup() {
   Serial.begin(9600);
-
   // initialize SX1262
   Serial.print(F("Initializing ... "));
   
@@ -75,11 +73,11 @@ void loop() {
     // disable reception interrupt
     enableInterrupt = false;
     detachInterrupt(digitalPinToInterrupt(2));
-
+    
     // save timestamp
     lastTransmit = millis();
 
-    Serial.println(F("Transmitting packet ... "));
+    //Serial.println(F("Transmitting packet ... "));
 
     // data to transmit
     uint8_t functionId = CMD_PING;
@@ -88,20 +86,20 @@ void loop() {
     uint8_t len = FCP_Get_Frame_Length(callsign);
     uint8_t* frame = new uint8_t[len];
     FCP_Encode(frame, callsign, functionId);
-    PRINT_BUFF(frame, len);
+    //PRINT_BUFF(frame, len);
 
     // send data
     int state = radio.transmit(frame, len);
     delete[] frame;
-    Serial.println(F("Ping!"));
+    //Serial.println(F("Ping!"));
 
     // check transmission success
     if (state == ERR_NONE) {
-      Serial.println(F("Success!"));
+      //Serial.println(F("Success!"));
     }
 
     // set radio mode to reception
-    Serial.println(F("Waiting for response ... "));
+    //Serial.println(F("Waiting for response ... "));
     radio.setDio1Action(setFlag);
     radio.startReceive();
     enableInterrupt = true;
@@ -133,6 +131,7 @@ void loop() {
 
       if(functionId == RESP_PONG) {
         Serial.println(F("Pong!"));
+        
       }
 
     } else {
