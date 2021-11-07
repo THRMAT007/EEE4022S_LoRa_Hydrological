@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include <LoRa.h>
+
 #include <WiFi.h>
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
@@ -117,33 +118,26 @@ void loop() {
     }
 
   //splitting message into the three values
-  int delimiter, delimiter_1 ,delimiter_2 ;
-  delimiter = Message.indexOf(",");
-  delimiter_1 = Message.indexOf(",", delimiter + 1);
-  delimiter_2 = Message.indexOf(",", delimiter_1 + 1);
+  int delimiter_0, delimiter_1 ,delimiter_2 ,delimiter_3, delimiter_4;
+  delimiter_0 = Message.indexOf("%");
+  delimiter_1 = Message.indexOf("%", delimiter_0 + 1);
+  delimiter_2 = Message.indexOf("%", delimiter_1 + 1);
+  delimiter_3 = Message.indexOf("%", delimiter_2 + 1);
+  delimiter_4 = Message.indexOf("%", delimiter_3 + 1);
+  
   //Define variables to be executed on the code later by collecting information from the readString as substrings.
-  String first = Message.substring(0, delimiter);
-  String second = Message.substring(delimiter + 1, delimiter_1);
-  String third = Message.substring(delimiter_1 + 1, delimiter_2);
-  String fourth = Message.substring(delimiter_2 + 1, Message.length());
+  String first = Message.substring(delimiter_0 +1, delimiter_1);
+  String second = Message.substring(delimiter_1 + 1, delimiter_2);
+  String third = Message.substring(delimiter_2 + 1, delimiter_3);
+  String fourth = Message.substring(delimiter_3 + 1, delimiter_4);
 
   counter = first.toFloat();
   temp = second.toFloat();
   hum = third.toFloat();
   moisture = fourth.toFloat();
-   //Serial.println(counter);
-  //Serial.println(temp);
-  //Serial.println(hum);
-
-    // print RSSI of packet
-    //Serial.print(" with RSSI ");
-    
-    //Serial.println(LoRa.packetRssi());
-  
-
   // Clear fields for reusing the point. Tags will remain untouched
   sensor.clearFields();
-
+  
   // Store measured value into point
   // Report RSSI of currently connected network
   sensor.addField("WiFi rssi", WiFi.RSSI());
@@ -163,13 +157,10 @@ void loop() {
     Serial.println("Wifi connection lost");
   }
 
-  // Write point
+  // Write to database
   if (!client.writePoint(sensor)) {
     Serial.print("InfluxDB write failed: ");
     Serial.println(client.getLastErrorMessage());
   }
-
-  //Serial.println("Wait 5s");
-  //counter ++;
   }
 }
