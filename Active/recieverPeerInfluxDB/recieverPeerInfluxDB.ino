@@ -9,9 +9,9 @@ WiFiMulti wifiMulti;
 #define DEVICE "ESP32"
 
 // WiFi AP SSID
-#define WIFI_SSID "Thorburn Home"
+#define WIFI_SSID "XXXXX"
 // WiFi password
-#define WIFI_PASSWORD "CATRadioGMT"
+#define WIFI_PASSWORD "XXXX"
 // InfluxDB v2 server url, e.g. https://eu-central-1-1.aws.cloud2.influxdata.com (Use: InfluxDB UI -> Load Data -> Client Libraries)
 #define INFLUXDB_URL "https://us-east-1-1.aws.cloud2.influxdata.com"
 // InfluxDB v2 server or cloud API token (Use: InfluxDB UI -> Data -> API Tokens -> <select token>)
