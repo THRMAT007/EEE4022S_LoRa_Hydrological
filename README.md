@@ -4,7 +4,7 @@ The Files in the repo were used in the development of a hydrological monitoring 
 The code developed was written in c++ and impleneted using the Arduino IDE.
 This required support for ESP32 and STM32 systems to be imported to the Arduino IDE and guide to do so can be found below:
 https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
-https://circuitdigest.com/microcontroller-projects/getting-started-with-stm32-blue-pill-development-board-stm32f103c8-using-arduino-ide
+https://blog.hobbycomponents.com/?p=758
 
 The nessesary Libaries for the operator at the ground station are:
 Adafruit_Unified_Sensor
