@@ -9,13 +9,13 @@ WiFiMulti wifiMulti;
 #define DEVICE "ESP32"
 
 // WiFi AP SSID
-#define WIFI_SSID "XXXXX"
+#define WIFI_SSID "XXXXX" 
 // WiFi password
 #define WIFI_PASSWORD "XXXX"
 // InfluxDB v2 server url, e.g. https://eu-central-1-1.aws.cloud2.influxdata.com (Use: InfluxDB UI -> Load Data -> Client Libraries)
 #define INFLUXDB_URL "https://us-east-1-1.aws.cloud2.influxdata.com"
 // InfluxDB v2 server or cloud API token (Use: InfluxDB UI -> Data -> API Tokens -> <select token>)
-#define INFLUXDB_TOKEN "CdcLL2itCKZxPD82hlsOUcC2_Hf2bavwT8-DgTkGutAiuLRZEsFmYUWtIw5CfEWN3o8Kg_C_b1B8cT0z5oQ_4Q=="
+#define INFLUXDB_TOKEN "XXXXXXXX"
 // InfluxDB v2 organization id (Use: InfluxDB UI -> User -> About -> Common Ids )
 #define INFLUXDB_ORG "twittythorburn@gmail.com"
 // InfluxDB v2 bucket name (Use: InfluxDB UI ->  Data -> Buckets)
