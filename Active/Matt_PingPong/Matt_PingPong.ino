@@ -1,4 +1,6 @@
 // include the libraries
+// This code was taken from the FossaSytens github page: https://github.com/FOSSASystems/FOSSASAT-1 
+// This code was develped by Julian Fernandez, Jan Gromeš, Richard Bamford, Chris Mulhall and modified to operate on an ESP32 using SX1278 lora module
 #include <FOSSA-Comms.h>
 #include <RadioLib.h>
 
